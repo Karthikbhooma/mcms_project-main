@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block title %}Admin Dashboard - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Admin Dashboard</h2>
+    <p>Municipal Officer Control Panel</p>
+</div>
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ total_complaints }}</h3>
+        <p>Total Complaints</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ pending_complaints }}</h3>
+        <p>Pending</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ resolved_complaints }}</h3>
+        <p>Resolved</p>
+    </div>
+</div>
+<div class="card">
+    <h3>Department-Wise Statistics</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead><tr><th>Department</th><th>Total</th><th>Pending</th><th>Resolved</th></tr></thead>
+            <tbody>
+                {% for dept in dept_stats %}
+                <tr>
+                    <td><a href="{% url 'adminpanel:department_complaints' dept.code %}">{{ dept.name }}</a></td>
+                    <td>{{ dept.total }}</td>
+                    <td>{{ dept.pending }}</td>
+                    <td>{{ dept.resolved }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>Recent Complaints</h3>
+        <a href="{% url 'adminpanel:all_complaints' %}" class="btn btn-primary">View All Complaints</a>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead><tr><th>ID</th><th>Citizen</th><th>Subject</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+                {% for complaint in recent_complaints %}
+                <tr>
+                    <td>{{ complaint.complaint_id }}</td>
+                    <td>{{ complaint.citizen.username }}</td>
+                    <td>{{ complaint.subject|truncatewords:6 }}</td>
+                    <td>{{ complaint.department.name }}</td>
+                    <td><span class="status-badge {{ complaint.get_status_display_class }}">{{ complaint.get_status_display }}</span></td>
+                    <td><a href="{% url 'adminpanel:complaint_detail' complaint.complaint_id %}" class="btn btn-secondary">View</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center">No complaints yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

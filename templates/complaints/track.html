@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% block title %}Track Complaint - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Track Your Complaint</h2>
+    <p>Enter your Complaint ID to check status</p>
+</div>
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <form method="get">
+        <div class="form-group">
+            <label class="form-label">Complaint ID</label>
+            <input type="text" name="complaint_id" class="form-input" placeholder="e.g., MCMS-2025-12345678" value="{{ search_id }}">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Track Complaint</button>
+    </form>
+</div>
+{% if complaint %}
+<div class="card">
+    <h3>Complaint Status</h3>
+    <table style="width: 100%;">
+        <tr><td style="padding: 10px; font-weight: bold; width: 200px;">Complaint ID:</td><td style="padding: 10px;">{{ complaint.complaint_id }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Current Status:</td><td style="padding: 10px;"><span class="status-badge {{ complaint.get_status_display_class }}">{{ complaint.get_status_display }}</span></td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Department:</td><td style="padding: 10px;">{{ complaint.department.name }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Submitted On:</td><td style="padding: 10px;">{{ complaint.submitted_at|date:"d-M-Y" }}</td></tr>
+        {% if complaint.official_remarks %}<tr><td style="padding: 10px; font-weight: bold;">Official Remarks:</td><td style="padding: 10px;">{{ complaint.official_remarks }}</td></tr>{% endif %}
+    </table>
+    <a href="{% url 'complaints:detail' complaint.complaint_id %}" class="btn btn-primary mt-20">View Full Details</a>
+</div>
+{% endif %}
+{% endblock %}

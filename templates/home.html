@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Home - MCMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Welcome to Municipal Complaint Management System</h2>
+    <p>Empowering Citizens for Better Civic Services</p>
+</div>
+
+<div class="card">
+    <h3>About MCMS</h3>
+    <p>
+        The Municipal Complaint Management System (MCMS) is a Government of India initiative 
+        under the Digital India program, designed to provide citizens with a transparent, 
+        efficient, and accountable platform for reporting civic issues.
+    </p>
+    
+    <div class="stats-grid mt-20">
+        <div class="stat-card">
+            <h3>🏛️</h3>
+            <p>Government-Certified Platform</p>
+        </div>
+        <div class="stat-card">
+            <h3>🔒</h3>
+            <p>Secure & Encrypted</p>
+        </div>
+        <div class="stat-card">
+            <h3>📱</h3>
+            <p>Mobile-Friendly Interface</p>
+        </div>
+        <div class="stat-card">
+            <h3>⚡</h3>
+            <p>Real-Time Tracking</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>How It Works</h3>
+    <ol style="line-height: 2;">
+        <li><strong>Register:</strong> Create your citizen account with mobile and email verification</li>
+        <li><strong>Login:</strong> Access your secure dashboard</li>
+        <li><strong>File Complaint:</strong> Submit complaints with proof documents</li>
+        <li><strong>Track Status:</strong> Monitor complaint progress in real-time</li>
+        <li><strong>Get Resolution:</strong> Receive updates from municipal officials</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h3>Available Departments</h3>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>💧</h3>
+            <p>Water Supply</p>
+        </div>
+        <div class="stat-card">
+            <h3>🛣️</h3>
+            <p>Roads & Transport</p>
+        </div>
+        <div class="stat-card">
+            <h3>🧹</h3>
+            <p>Sanitation</p>
+        </div>
+        <div class="stat-card">
+            <h3>⚡</h3>
+            <p>Electricity</p>
+        </div>
+        <div class="stat-card">
+            <h3>🏥</h3>
+            <p>Public Health</p>
+        </div>
+    </div>
+</div>
+
+<div class="card text-center">
+    <h3>Get Started</h3>
+    <p style="margin-bottom: 20px;">Join thousands of citizens making their cities better</p>
+    <a href="/accounts/register/" class="btn btn-primary">Register Now</a>
+    <a href="/accounts/login/" class="btn btn-outline">Login</a>
+</div>
+{% endblock %}

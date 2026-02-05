@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+{% block title %}Manage Complaint - MCMS Admin{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Manage Complaint</h2>
+    <p>ID: {{ complaint.complaint_id }}</p>
+</div>
+<div class="card">
+    <h3>Complaint Details</h3>
+    <table style="width: 100%;">
+        <tr><td style="padding: 10px; font-weight: bold; width: 200px;">Citizen:</td><td style="padding: 10px;">{{ complaint.citizen.username }} ({{ complaint.citizen.email }})</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Department:</td><td style="padding: 10px;">{{ complaint.department.name }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Subject:</td><td style="padding: 10px;">{{ complaint.subject }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Description:</td><td style="padding: 10px;">{{ complaint.description }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Location:</td><td style="padding: 10px;">Ward {{ complaint.ward_number }}, {{ complaint.area }}</td></tr>
+        {% if complaint.proof_file %}<tr><td style="padding: 10px; font-weight: bold;">Proof:</td><td style="padding: 10px;"><a href="{{ complaint.proof_file.url }}" target="_blank">View Attachment</a></td></tr>{% endif %}
+    </table>
+</div>
+<div class="card">
+    <h3>Update Status & Add Remarks</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label required">Status</label>
+            {{ form.status }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Assigned Officer</label>
+            {{ form.officer }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Official Remarks (Visible to Citizen)</label>
+            {{ form.official_remarks }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Resolution Notes (Internal)</label>
+            {{ form.resolution_notes }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Resolution Proof (file/photo)</label>
+            {{ form.resolution_proof }}
+            {% if complaint.resolution_proof %}
+            <div style="margin-top:8px;"><a href="{{ complaint.resolution_proof.url }}" target="_blank">View existing resolution proof</a></div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Update Complaint</button>
+        <a href="{% url 'adminpanel:all_complaints' %}" class="btn btn-secondary">Back to All Complaints</a>
+    </form>
+    <form method="post" action="{% url 'adminpanel:resolve_complaint' complaint.complaint_id %}" enctype="multipart/form-data" style="display:inline; margin-left:8px;">
+        {% csrf_token %}
+        <input type="hidden" name="resolution_notes" value="{{ complaint.resolution_notes }}">
+        <button type="submit" class="btn btn-success">Quick Resolve</button>
+    </form>
+    <form method="post" action="{% url 'adminpanel:delete_complaint' complaint.complaint_id %}" style="display:inline; margin-left:8px;" onsubmit="return confirm('Archive (delete) this complaint?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Complaint</button>
+    </form>
+    </form>
+</div>
+<div class="card">
+    <h3>Status History</h3>
+    <table class="data-table">
+        <thead><tr><th>From</th><th>To</th><th>Changed By</th><th>Date</th><th>Remarks</th></tr></thead>
+        <tbody>
+            {% for h in status_history %}
+            <tr>
+                <td>{{ h.from_status|default:"—" }}</td>
+                <td>{{ h.to_status }}</td>
+                <td>{{ h.changed_by.username|default:"System" }}</td>
+                <td>{{ h.changed_at|date:"d-M-Y H:i" }}</td>
+                <td>{{ h.remarks|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

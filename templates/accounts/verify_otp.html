@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block title %}Verify OTP - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Email Verification</h2>
+    <p>Enter the OTP sent to {{ email }}</p>
+</div>
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label required">Enter 6-Digit OTP</label>
+            {{ form.otp }}
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Verify OTP</button>
+    </form>
+    <p class="text-center mt-20">
+        Didn't receive OTP? <a href="{% url 'accounts:resend_otp' %}">Resend OTP</a>
+    </p>
+</div>
+{% endblock %}

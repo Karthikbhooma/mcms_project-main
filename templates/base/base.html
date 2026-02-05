@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}MCMS - Municipal Complaint Management System{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="emblem">
+                        🏛️
+                    </div>
+                    <div class="site-title">
+                        <h1>Municipal Complaint Management System</h1>
+                        <p>Government of India | Digital India Initiative</p>
+                    </div>
+                </div>
+                
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/departments/">Departments</a></li>
+                        
+                        {% if user.is_authenticated %}
+                            {% if user.is_staff %}
+                                <li><a href="/admin-panel/dashboard/">Admin Dashboard</a></li>
+                                <li><a href="/admin-panel/logout/">Logout</a></li>
+                            {% else %}
+                                <li><a href="/complaints/dashboard/">My Dashboard</a></li>
+                                <li><a href="/complaints/submit/">File Complaint</a></li>
+                                <li><a href="/accounts/logout/">Logout</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="/accounts/login/">Citizen Login</a></li>
+                            <li><a href="/accounts/register/">Register</a></li>
+                            <li><a href="/admin-panel/login/">Admin Login</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Django Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Municipal Complaint Management System</p>
+            <p>Government of India | Ministry of Electronics and Information Technology (MeitY)</p>
+            <p>Best viewed in Chrome, Firefox, Safari | Resolution: 1024x768 and above</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

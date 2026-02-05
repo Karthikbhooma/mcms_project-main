@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+{% block title %}File Complaint - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>File New Complaint</h2>
+    <p>Submit your civic complaint with details</p>
+</div>
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label required">Department</label>
+            {{ form.department }}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label required">Ward Number</label>
+            {{ form.ward_number }}
+        </div>
+        <div class="form-group">
+            <label class="form-label required">Area/Locality</label>
+            {{ form.area }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Landmark</label>
+            {{ form.landmark }}
+        </div>
+        <div class="form-group">
+            <label class="form-label required">Subject</label>
+            {{ form.subject }}
+        </div>
+        <div class="form-group">
+            <label class="form-label required">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Upload Proof (JPG, PNG, PDF - Max 5MB)</label>
+            {{ form.proof_file }}
+            <div id="file-info" class="form-help"></div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Complaint</button>
+    </form>
+</div>
+<script>
+// Dynamic category loader and file info helper
+(function(){
+    function qs(selector){ return document.querySelector(selector); }
+
+    const dept = qs('#id_department');
+    const fileInput = qs('#id_proof_file');
+
+    if(dept){
+        // If department passed via query string, pre-select it
+        try{
+            const params = new URLSearchParams(window.location.search);
+            const pre = params.get('department');
+            if(pre){
+                dept.value = pre;
+            }
+        }catch(e){}
+    }
+
+    if(fileInput){
+        const info = document.getElementById('file-info');
+        fileInput.addEventListener('change', function(){
+            const f = this.files && this.files[0];
+            if(!f){ info.textContent = ''; return; }
+            info.textContent = `Selected file: ${f.name} (${Math.round(f.size/1024)} KB)`;
+        });
+    }
+})();
+</script>
+{% endblock %}

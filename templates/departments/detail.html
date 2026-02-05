@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ department.name }} - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>{{ department.name }}</h2>
+    <p>{{ department.description }}</p>
+    <p>
+        <strong>Head:</strong> {{ department.head_of_department|default:"—" }}
+        {% if department.contact_number %}| <strong>Contact:</strong> {{ department.contact_number }}{% endif %}
+        {% if department.email %}| <strong>Email:</strong> <a href="mailto:{{ department.email }}">{{ department.email }}</a>{% endif %}
+    </p>
+</div>
+<div class="card">
+    <h3>Categories</h3>
+    {% if categories %}
+    <ul class="dept-categories">
+        {% for cat in categories %}
+        <li>
+            <strong>{{ cat.name }}</strong>
+            {% if cat.description %}- {{ cat.description }}{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No categories available for this department.</p>
+    {% endif %}
+</div>
+<div style="margin-top:16px; display:flex; gap:8px;">
+    <a href="{% url 'departments:list' %}" class="btn btn-secondary">Back to Departments</a>
+    <a href="{% url 'complaints:submit' %}?department={{ department.code }}" class="btn btn-primary">File a Complaint</a>
+</div>
+{% endblock %}

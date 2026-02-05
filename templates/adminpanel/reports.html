@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% block title %}Reports - Admin{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Reports & Analytics</h2>
+    <p>Department-wise complaint statistics</p>
+</div>
+<div class="card">
+    <h3>Department Performance Report</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Total</th>
+                    <th>Submitted</th>
+                    <th>Under Review</th>
+                    <th>In Progress</th>
+                    <th>Resolved</th>
+                    <th>Closed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in dept_stats %}
+                <tr>
+                    <td>{{ dept.name }}</td>
+                    <td>{{ dept.total }}</td>
+                    <td>{{ dept.submitted }}</td>
+                    <td>{{ dept.under_review }}</td>
+                    <td>{{ dept.in_progress }}</td>
+                    <td>{{ dept.resolved }}</td>
+                    <td>{{ dept.closed }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block title %}Departments - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Municipal Departments</h2>
+    <p>Select a department to view details</p>
+</div>
+<div class="stats-grid">
+    {% for dept in departments %}
+    <div class="stat-card">
+        <h3>{{ dept.name }}</h3>
+        <p>{{ dept.description }}</p>
+        <a href="{% url 'departments:detail' dept.code %}" class="btn btn-primary mt-20">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

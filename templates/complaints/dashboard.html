@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% block title %}Citizen Dashboard - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>My Dashboard</h2>
+    <p>Welcome, {{ user.username }}!</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ total_complaints }}</h3>
+        <p>Total Complaints</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ pending_complaints }}</h3>
+        <p>Pending</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ resolved_complaints }}</h3>
+        <p>Resolved</p>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>My Complaints</h3>
+        <a href="{% url 'complaints:submit' %}" class="btn btn-primary">File New Complaint</a>
+    </div>
+    
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Subject</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Submitted On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                <tr>
+                    <td>{{ complaint.complaint_id }}</td>
+                    <td>{{ complaint.subject|truncatewords:8 }}</td>
+                    <td>{{ complaint.department.name }}</td>
+                    <td><span class="status-badge {{ complaint.get_status_display_class }}">{{ complaint.get_status_display }}</span></td>
+                    <td>{{ complaint.submitted_at|date:"d-M-Y" }}</td>
+                    <td><a href="{% url 'complaints:detail' complaint.complaint_id %}" class="btn btn-secondary">View</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center">No complaints filed yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

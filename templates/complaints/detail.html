@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% block title %}Complaint Details - MCMS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Complaint Details</h2>
+    <p>Complaint ID: {{ complaint.complaint_id }}</p>
+</div>
+<div class="card">
+    <h3>Complaint Information</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr><td style="padding: 10px; font-weight: bold; width: 200px;">Complaint ID:</td><td style="padding: 10px;">{{ complaint.complaint_id }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Status:</td><td style="padding: 10px;"><span class="status-badge {{ complaint.get_status_display_class }}">{{ complaint.get_status_display }}</span></td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Department:</td><td style="padding: 10px;">{{ complaint.department.name }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Subject:</td><td style="padding: 10px;">{{ complaint.subject }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Description:</td><td style="padding: 10px;">{{ complaint.description }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Location:</td><td style="padding: 10px;">Ward {{ complaint.ward_number }}, {{ complaint.area }}</td></tr>
+        <tr><td style="padding: 10px; font-weight: bold;">Submitted On:</td><td style="padding: 10px;">{{ complaint.submitted_at|date:"d-M-Y H:i" }}</td></tr>
+        {% if complaint.proof_file %}<tr><td style="padding: 10px; font-weight: bold;">Proof:</td><td style="padding: 10px;"><a href="{{ complaint.proof_file.url }}" target="_blank">View Attachment</a></td></tr>{% endif %}
+        {% if complaint.official_remarks %}<tr><td style="padding: 10px; font-weight: bold;">Official Remarks:</td><td style="padding: 10px;">{{ complaint.official_remarks }}</td></tr>{% endif %}
+    </table>
+</div>
+<div class="card">
+    <h3>Status History</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <thead><tr><th>From Status</th><th>To Status</th><th>Date & Time</th><th>Remarks</th></tr></thead>
+            <tbody>
+                {% for history in status_history %}
+                <tr>
+                    <td>{{ history.from_status|default:"N/A" }}</td>
+                    <td>{{ history.to_status }}</td>
+                    <td>{{ history.changed_at|date:"d-M-Y H:i" }}</td>
+                    <td>{{ history.remarks|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<a href="{% url 'complaints:dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

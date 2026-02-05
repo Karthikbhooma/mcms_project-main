@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Citizen Login - MCMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Citizen Login</h2>
+    <p>Access your complaint dashboard</p>
+</div>
+
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label required">Username</label>
+            {{ form.username }}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label required">Password</label>
+            {{ form.password }}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label required">CAPTCHA</label>
+            <div class="captcha-container">
+                <img src="/media/captcha/{{ captcha_image }}" alt="CAPTCHA" id="captcha-image" width="200" height="80">
+                <span id="refresh-captcha" class="refresh-captcha">🔄 Refresh</span>
+            </div>
+            {{ form.captcha_input }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+    </form>
+    
+    <p class="text-center mt-20">
+        Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a>
+    </p>
+</div>
+{% endblock %}
